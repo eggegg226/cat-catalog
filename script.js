@@ -1,48 +1,49 @@
-// 获取表单和容器
-const catForm = document.getElementById('catForm');
-const catContainer = document.getElementById('catContainer');
+const catsFile = "cats.json"; // JSON 文件路径
 
-// 用于存储猫猫数据
-const cats = [];
+// 加载并渲染猫咪数据
+async function loadCats() {
+    const response = await fetch(catsFile); // 从 GitHub 加载 cats.json
+    const cats = await response.json(); // 解析 JSON 数据
+    const list = document.getElementById("list");
+    list.innerHTML = ""; // 清空现有内容
 
-// 显示猫猫卡片
-function displayCats() {
-  catContainer.innerHTML = '';  // 清空现有内容
-  cats.forEach(cat => {
-    const catCard = document.createElement('div');
-    catCard.className = 'cat-card';
-    catCard.innerHTML = `
-      <img src="${cat.image}" alt="${cat.name}">
-      <div class="cat-name">${cat.name}</div>
-      <div class="cat-info">${cat.breed} | ${cat.age}</div>
-      <p>${cat.description}</p>
-    `;
-    catContainer.appendChild(catCard);
-  });
+    // 渲染猫咪数据
+    cats.forEach(cat => {
+        list.innerHTML += `
+        <div class="card">
+            <img src="${cat.img}" alt="猫咪图片">
+            <div class="name">${cat.name}</div>
+            <div class="desc">${cat.desc}</div>
+        </div>`;
+    });
 }
 
-// 处理表单提交
-catForm.addEventListener('submit', (e) => {
-  e.preventDefault(); // 防止页面刷新
+// 添加新猫咪（这里只是一个简单示例，假设你会手动更新 JSON 文件）
+function addCat() {
+    const name = document.getElementById("name").value;
+    const desc = document.getElementById("desc").value;
+    const file = document.getElementById("img").files[0];
 
-  const name = document.getElementById('catName').value;
-  const breed = document.getElementById('catBreed').value;
-  const age = document.getElementById('catAge').value;
-  const image = document.getElementById('catImage').value;
-  const description = document.getElementById('catDescription').value;
+    if (!name || !file) {
+        alert("请填写名字并上传图片！");
+        return;
+    }
 
-  // 创建新的猫猫对象
-  const newCat = { name, breed, age, image, description };
+    const reader = new FileReader();
+    reader.onload = function(e) {
+        const newCat = {
+            name: name,
+            desc: desc,
+            img: e.target.result
+        };
 
-  // 将新的猫猫信息添加到数组中
-  cats.push(newCat);
+        // 你可以将 newCat 添加到 GitHub 仓库中的 cats.json 文件
+        alert("新猫咪已添加！你需要手动更新 GitHub 仓库中的 cats.json 文件。");
 
-  // 重新显示猫猫卡片
-  displayCats();
+        loadCats(); // 重新加载猫咪数据
+    };
 
-  // 清空表单
-  catForm.reset();
-});
+    reader.readAsDataURL(file); // 读取文件内容
+}
 
-// 初始加载时显示空的猫猫图鉴
-displayCats();
+loadCats(); // 加载猫咪数据
