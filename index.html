@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cat Catalog</title>
+  <link rel="stylesheet" href="style.css"> <!-- 引用样式文件 -->
+</head>
+<body>
+  <header>
+    <h1>Welcome to the Cat Catalog!</h1>
+  </header>
+
+  <!-- 添加猫猫的表单 -->
+  <section id="addCatForm">
+    <h2>Add a New Cat</h2>
+    <form id="catForm">
+      <label for="catName">Name:</label>
+      <input type="text" id="catName" required>
+
+      <label for="catBreed">Breed:</label>
+      <input type="text" id="catBreed" required>
+
+      <label for="catAge">Age:</label>
+      <input type="text" id="catAge" required>
+
+      <label for="catImage">Image URL:</label>
+      <input type="url" id="catImage" required>
+
+      <label for="catDescription">Description:</label>
+      <textarea id="catDescription" required></textarea>
+
+      <button type="submit">Add Cat</button>
+    </form>
+  </section>
+
+  <main id="catContainer">
+    <!-- 猫猫卡片将在这里显示 -->
+  </main>
+
+  <script src="script.js"></script> <!-- 引用 JavaScript 文件 -->
+</body>
+</html>
