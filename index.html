@@ -1,43 +1,163 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Cat Catalog</title>
-  <link rel="stylesheet" href="style.css"> <!-- 引用样式文件 -->
+<meta charset="UTF-8">
+<title>猫猫图鉴</title>
+
+<style>
+    body {
+        font-family: "Microsoft YaHei", sans-serif;
+        background: #fff7fb;
+        margin: 0;
+        padding: 20px;
+    }
+
+    h1 {
+        text-align: center;
+        color: #ff6fae;
+    }
+
+    .container {
+        max-width: 800px;
+        margin: auto;
+    }
+
+    .form {
+        background: white;
+        padding: 15px;
+        border-radius: 12px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        margin-bottom: 20px;
+    }
+
+    input, textarea {
+        width: 100%;
+        margin: 5px 0 10px;
+        padding: 8px;
+        border-radius: 8px;
+        border: 1px solid #ddd;
+    }
+
+    button {
+        background: #ff6fae;
+        color: white;
+        border: none;
+        padding: 10px;
+        border-radius: 8px;
+        cursor: pointer;
+        width: 100%;
+    }
+
+    button:hover {
+        background: #ff4f97;
+    }
+
+    .card-list {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 15px;
+    }
+
+    .card {
+        background: white;
+        border-radius: 12px;
+        padding: 10px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        text-align: center;
+    }
+
+    .card img {
+        width: 100%;
+        height: 200px;
+        object-fit: cover;
+        border-radius: 10px;
+    }
+
+    .name {
+        font-size: 18px;
+        margin: 8px 0 4px;
+        color: #333;
+    }
+
+    .desc {
+        font-size: 14px;
+        color: #666;
+    }
+</style>
 </head>
+
 <body>
-  <header>
-    <h1>Welcome to the Cat Catalog!</h1>
-  </header>
 
-  <!-- 添加猫猫的表单 -->
-  <section id="addCatForm">
-    <h2>Add a New Cat</h2>
-    <form id="catForm">
-      <label for="catName">Name:</label>
-      <input type="text" id="catName" required>
+<div class="container">
 
-      <label for="catBreed">Breed:</label>
-      <input type="text" id="catBreed" required>
+    <h1>🐱 猫猫图鉴</h1>
 
-      <label for="catAge">Age:</label>
-      <input type="text" id="catAge" required>
+    <!-- 输入区域 -->
+    <div class="form">
+        <label>猫咪名字：</label>
+        <input type="text" id="name" placeholder="例如：小橘">
 
-      <label for="catImage">Image URL:</label>
-      <input type="url" id="catImage" required>
+        <label>猫咪简介：</label>
+        <textarea id="desc" placeholder="例如：学校最可爱的流浪猫"></textarea>
 
-      <label for="catDescription">Description:</label>
-      <textarea id="catDescription" required></textarea>
+        <label>上传猫咪照片：</label>
+        <input type="file" id="img" accept="image/*">
 
-      <button type="submit">Add Cat</button>
-    </form>
-  </section>
+        <button onclick="addCat()">添加猫咪</button>
+    </div>
 
-  <main id="catContainer">
-    <!-- 猫猫卡片将在这里显示 -->
-  </main>
+    <!-- 展示区域 -->
+    <div class="card-list" id="list"></div>
 
-  <script src="script.js"></script> <!-- 引用 JavaScript 文件 -->
+</div>
+
+<script>
+let cats = JSON.parse(localStorage.getItem("cats")) || [];
+
+function render() {
+    const list = document.getElementById("list");
+    list.innerHTML = "";
+
+    cats.forEach(cat => {
+        list.innerHTML += `
+        <div class="card">
+            <img src="${cat.img}">
+            <div class="name">${cat.name}</div>
+            <div class="desc">${cat.desc}</div>
+        </div>`;
+    });
+}
+
+function addCat() {
+    const name = document.getElementById("name").value;
+    const desc = document.getElementById("desc").value;
+    const file = document.getElementById("img").files[0];
+
+    if (!name || !file) {
+        alert("请填写名字并上传图片！");
+        return;
+    }
+
+    const reader = new FileReader();
+
+    reader.onload = function(e) {
+        const cat = {
+            name: name,
+            desc: desc,
+            img: e.target.result
+        };
+
+        cats.push(cat);
+        localStorage.setItem("cats", JSON.stringify(cats));
+
+        render();
+    };
+
+    reader.readAsDataURL(file);
+}
+
+render();
+</script>
+
 </body>
 </html>
