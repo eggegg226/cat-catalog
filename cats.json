@@ -31,9 +31,14 @@
         "img": "images/cat6.jpg"
     },
     {
-        "name": "皮茶叶蛋",
+        "name": "茶叶蛋",
         "desc": "小母猫，已绝育 亲人 经常和蛋卷一起",
-        "img": "images/cat6.jpg"
+        "img": "images/cat7.jpg"
+    },
+    {
+        "name": "蛋卷",
+        "desc": "小母猫，已绝育 微亲人 会打人 经常和茶叶蛋一起",
+        "img": "images/cat8.jpg"
     }
     
 ]
